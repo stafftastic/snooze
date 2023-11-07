@@ -5,6 +5,7 @@ namespace Thomasjohnkane\Snooze\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Thomasjohnkane\Snooze\Models\ScheduledNotification;
+use Thomasjohnkane\Snooze\Models\ScheduledNotification as ScheduledNotificationModel;
 
 class PruneScheduledNotifications extends Command
 {
@@ -39,7 +40,8 @@ class PruneScheduledNotifications extends Command
 
         $pruneBeforeDate = Carbon::now()->subDays($pruneDays);
 
-        $notifications = ScheduledNotification::where(function ($query) {
+        $modelClass = config('snooze.model') ?? ScheduledNotificationModel::class;
+        $notifications = $modelClass::where(function ($query) {
             $query->where('sent_at', '!=', null);
             $query->orWhere('cancelled_at', '!=', null);
         })->where(function ($query) use ($pruneBeforeDate) {
