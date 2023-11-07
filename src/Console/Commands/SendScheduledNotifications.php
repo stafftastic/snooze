@@ -5,7 +5,6 @@ namespace Thomasjohnkane\Snooze\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Thomasjohnkane\Snooze\Models\ScheduledNotification as ScheduledNotificationModel;
-use Thomasjohnkane\Snooze\ScheduledNotification;
 
 class SendScheduledNotifications extends Command
 {
@@ -53,7 +52,7 @@ class SendScheduledNotifications extends Command
 
         $this->info(sprintf('Sending %d scheduled notifications...', $notifications->count()));
 
-        $notifications->each(function (ScheduledNotification $notification) use ($bar) {
+        $notifications->each(function ($notification) use ($bar) {
             $bar->advance();
 
             try {
