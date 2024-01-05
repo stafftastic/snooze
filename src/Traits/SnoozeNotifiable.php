@@ -27,13 +27,15 @@ trait SnoozeNotifiable
 
     public static function fromSerializedPayload(array $payload): ClassMapSerializable
     {
-        return self::query()->findOrFail($payload['id']);
+        $class = new self();
+
+        return self::query()->findOrFail($payload[$class->getKeyName()]);
     }
 
     public function toSerializedPayload(): array
     {
         return [
-            'id' => $this->id
+            $this->getKeyName() => $this->getKey()
         ];
     }
 }
